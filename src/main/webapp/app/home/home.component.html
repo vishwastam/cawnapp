@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-md-3">
+        <!--span class="hipster img-fluid img-rounded"></span-->
+    </div>
+    <div class="col-md-9">
+        <h1 class="display-4">Welcome to Cawnfig!</h1>
+        <p class="lead">Your application configuration portal.</p>
+
+        <div [ngSwitch]="isAuthenticated()">
+            <div class="alert alert-success" *ngSwitchCase="true">
+                <span *ngIf="account"
+                   > You are logged in as user "{{account.login}}". </span>
+            </div>
+
+            <div class="alert alert-warning" *ngSwitchCase="false">
+                <span>If you have an account, go ahead and </span>
+                <a class="alert-link" (click)="login()">SIGN IN</a>
+            </div>
+
+            <div class="alert alert-warning" *ngSwitchCase="false">
+                <span>Don't have an account yet?</span>
+                <a class="alert-link" routerLink="register">REGISTER</a>
+            </div>
+        </div>
+
+        <p>
+            If you have any question on Cawnfig:
+        </p>
+
+        <ul>
+            <li>Visit <a href="http://www.cawnfig.com/" target="_blank">Cawnfig</a> homepage</li>
+            <li>Write to us at cawnfig@gmail.com</a></li>
+        </ul>
+    </div>
+</div>

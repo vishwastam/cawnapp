@@ -2,26 +2,22 @@ package com.cawnfig.cawnapp.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.cawnfig.cawnapp.domain.Key;
-import com.cawnfig.cawnapp.service.KeyService;
+
+import com.cawnfig.cawnapp.repository.KeyRepository;
+import com.cawnfig.cawnapp.repository.search.KeySearchRepository;
 import com.cawnfig.cawnapp.web.rest.util.HeaderUtil;
-import com.cawnfig.cawnapp.web.rest.util.PaginationUtil;
-import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -37,10 +33,13 @@ public class KeyResource {
 
     private static final String ENTITY_NAME = "key";
 
-    private final KeyService keyService;
+    private final KeyRepository keyRepository;
 
-    public KeyResource(KeyService keyService) {
-        this.keyService = keyService;
+    private final KeySearchRepository keySearchRepository;
+
+    public KeyResource(KeyRepository keyRepository, KeySearchRepository keySearchRepository) {
+        this.keyRepository = keyRepository;
+        this.keySearchRepository = keySearchRepository;
     }
 
     /**
@@ -52,12 +51,13 @@ public class KeyResource {
      */
     @PostMapping("/keys")
     @Timed
-    public ResponseEntity<Key> createKey(@Valid @RequestBody Key key) throws URISyntaxException {
+    public ResponseEntity<Key> createKey(@RequestBody Key key) throws URISyntaxException {
         log.debug("REST request to save Key : {}", key);
         if (key.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new key cannot already have an ID")).body(null);
         }
-        Key result = keyService.save(key);
+        Key result = keyRepository.save(key);
+        keySearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/keys/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -74,12 +74,13 @@ public class KeyResource {
      */
     @PutMapping("/keys")
     @Timed
-    public ResponseEntity<Key> updateKey(@Valid @RequestBody Key key) throws URISyntaxException {
+    public ResponseEntity<Key> updateKey(@RequestBody Key key) throws URISyntaxException {
         log.debug("REST request to update Key : {}", key);
         if (key.getId() == null) {
             return createKey(key);
         }
-        Key result = keyService.save(key);
+        Key result = keyRepository.save(key);
+        keySearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, key.getId().toString()))
             .body(result);
@@ -88,16 +89,13 @@ public class KeyResource {
     /**
      * GET  /keys : get all the keys.
      *
-     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of keys in body
      */
     @GetMapping("/keys")
     @Timed
-    public ResponseEntity<List<Key>> getAllKeys(@ApiParam Pageable pageable) {
-        log.debug("REST request to get a page of Keys");
-        Page<Key> page = keyService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/keys");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public List<Key> getAllKeys() {
+        log.debug("REST request to get all Keys");
+        return keyRepository.findAll();
     }
 
     /**
@@ -110,7 +108,7 @@ public class KeyResource {
     @Timed
     public ResponseEntity<Key> getKey(@PathVariable Long id) {
         log.debug("REST request to get Key : {}", id);
-        Key key = keyService.findOne(id);
+        Key key = keyRepository.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(key));
     }
 
@@ -124,7 +122,8 @@ public class KeyResource {
     @Timed
     public ResponseEntity<Void> deleteKey(@PathVariable Long id) {
         log.debug("REST request to delete Key : {}", id);
-        keyService.delete(id);
+        keyRepository.delete(id);
+        keySearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -133,16 +132,15 @@ public class KeyResource {
      * to the query.
      *
      * @param query the query of the key search
-     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/keys")
     @Timed
-    public ResponseEntity<List<Key>> searchKeys(@RequestParam String query, @ApiParam Pageable pageable) {
-        log.debug("REST request to search for a page of Keys for query {}", query);
-        Page<Key> page = keyService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/keys");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public List<Key> searchKeys(@RequestParam String query) {
+        log.debug("REST request to search Keys for query {}", query);
+        return StreamSupport
+            .stream(keySearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .collect(Collectors.toList());
     }
 
 }

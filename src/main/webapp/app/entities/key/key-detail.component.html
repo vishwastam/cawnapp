@@ -4,13 +4,23 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span>Key</span></dt>
+        <dt><span>Name</span></dt>
         <dd>
-            <span>{{key.key}}</span>
+            <span>{{key.name}}</span>
         </dd>
         <dt><span>Value</span></dt>
         <dd>
             <span>{{key.value}}</span>
+        </dd>
+        <dt><span>Description</span></dt>
+        <dd>
+            <span>{{key.description}}</span>
+        </dd>
+        <dt><span>Application</span></dt>
+        <dd>
+            <div *ngIf="key.application">
+                <a [routerLink]="['/application', key.application?.id]">{{key.application?.name}}</a>
+            </div>
         </dd>
     </dl>
 

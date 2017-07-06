@@ -5,7 +5,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -25,13 +24,17 @@ public class Key implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @NotNull
-    @Column(name = "jhi_key", nullable = false)
-    private String key;
+    @Column(name = "name")
+    private String name;
 
-    @NotNull
-    @Column(name = "jhi_value", nullable = false)
+    @Column(name = "jhi_value")
     private String value;
+
+    @Column(name = "description")
+    private String description;
+
+    @ManyToOne
+    private Application application;
 
     public Long getId() {
         return id;
@@ -41,17 +44,17 @@ public class Key implements Serializable {
         this.id = id;
     }
 
-    public String getKey() {
-        return key;
+    public String getName() {
+        return name;
     }
 
-    public Key key(String key) {
-        this.key = key;
+    public Key name(String name) {
+        this.name = name;
         return this;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getValue() {
@@ -65,6 +68,32 @@ public class Key implements Serializable {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Key description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Application getApplication() {
+        return application;
+    }
+
+    public Key application(Application application) {
+        this.application = application;
+        return this;
+    }
+
+    public void setApplication(Application application) {
+        this.application = application;
     }
 
     @Override
@@ -91,8 +120,9 @@ public class Key implements Serializable {
     public String toString() {
         return "Key{" +
             "id=" + getId() +
-            ", key='" + getKey() + "'" +
+            ", name='" + getName() + "'" +
             ", value='" + getValue() + "'" +
+            ", description='" + getDescription() + "'" +
             "}";
     }
 }

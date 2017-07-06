@@ -2,9 +2,15 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "one-to-many",
+            "relationshipName": "key",
+            "otherEntityName": "key",
+            "otherEntityRelationshipName": "application"
+        },
+        {
+            "relationshipType": "many-to-one",
             "relationshipName": "organisation",
             "otherEntityName": "organisation",
-            "relationshipType": "many-to-one",
             "otherEntityField": "name"
         }
     ],
@@ -19,8 +25,8 @@
         }
     ],
     "changelogDate": "20170704183315",
-    "dto": "no",
-    "service": "no",
     "entityTableName": "application",
-    "pagination": "no"
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
 }

@@ -1,25 +1,30 @@
 {
     "fluentMethods": true,
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "application",
+            "otherEntityName": "application",
+            "otherEntityField": "name"
+        }
+    ],
     "fields": [
         {
-            "fieldName": "key",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldName": "name",
+            "fieldType": "String"
         },
         {
             "fieldName": "value",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
         }
     ],
-    "changelogDate": "20170606170308",
-    "dto": "no",
-    "service": "serviceImpl",
+    "changelogDate": "20170706165801",
     "entityTableName": "key",
-    "pagination": "pagination"
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
 }

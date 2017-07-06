@@ -1,8 +1,11 @@
+import { Application } from '../application';
 export class Key {
     constructor(
         public id?: number,
-        public key?: string,
+        public name?: string,
         public value?: string,
+        public description?: string,
+        public application?: Application,
     ) {
     }
 }

@@ -1,11 +1,14 @@
 package com.cawnfig.cawnapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -29,6 +32,11 @@ public class Application implements Serializable {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "application")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Key> keys = new HashSet<>();
 
     @ManyToOne
     private Organisation organisation;
@@ -65,6 +73,31 @@ public class Application implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<Key> getKeys() {
+        return keys;
+    }
+
+    public Application keys(Set<Key> keys) {
+        this.keys = keys;
+        return this;
+    }
+
+    public Application addKey(Key key) {
+        this.keys.add(key);
+        key.setApplication(this);
+        return this;
+    }
+
+    public Application removeKey(Key key) {
+        this.keys.remove(key);
+        key.setApplication(null);
+        return this;
+    }
+
+    public void setKeys(Set<Key> keys) {
+        this.keys = keys;
     }
 
     public Organisation getOrganisation() {

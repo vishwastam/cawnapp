@@ -13,7 +13,6 @@ import {
     KeyDeleteDialogComponent,
     keyRoute,
     keyPopupRoute,
-    KeyResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -44,7 +43,6 @@ const ENTITY_STATES = [
     providers: [
         KeyService,
         KeyPopupService,
-        KeyResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -9,6 +9,8 @@ import { EventManager, AlertService } from 'ng-jhipster';
 import { Key } from './key.model';
 import { KeyPopupService } from './key-popup.service';
 import { KeyService } from './key.service';
+import { Application, ApplicationService } from '../application';
+import { ResponseWrapper } from '../../shared';
 
 @Component({
     selector: 'jhi-key-dialog',
@@ -20,10 +22,13 @@ export class KeyDialogComponent implements OnInit {
     authorities: any[];
     isSaving: boolean;
 
+    applications: Application[];
+
     constructor(
         public activeModal: NgbActiveModal,
         private alertService: AlertService,
         private keyService: KeyService,
+        private applicationService: ApplicationService,
         private eventManager: EventManager
     ) {
     }
@@ -31,6 +36,8 @@ export class KeyDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
+        this.applicationService.query()
+            .subscribe((res: ResponseWrapper) => { this.applications = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
     clear() {
         this.activeModal.dismiss('cancel');
@@ -75,6 +82,10 @@ export class KeyDialogComponent implements OnInit {
 
     private onError(error) {
         this.alertService.error(error.message, null, null);
+    }
+
+    trackApplicationById(index: number, item: Application) {
+        return item.id;
     }
 }
 

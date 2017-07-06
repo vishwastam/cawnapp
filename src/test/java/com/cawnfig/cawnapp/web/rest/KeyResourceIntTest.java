@@ -4,7 +4,6 @@ import com.cawnfig.cawnapp.CawnappApp;
 
 import com.cawnfig.cawnapp.domain.Key;
 import com.cawnfig.cawnapp.repository.KeyRepository;
-import com.cawnfig.cawnapp.service.KeyService;
 import com.cawnfig.cawnapp.repository.search.KeySearchRepository;
 import com.cawnfig.cawnapp.web.rest.errors.ExceptionTranslator;
 
@@ -39,17 +38,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = CawnappApp.class)
 public class KeyResourceIntTest {
 
-    private static final String DEFAULT_KEY = "AAAAAAAAAA";
-    private static final String UPDATED_KEY = "BBBBBBBBBB";
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
 
     private static final String DEFAULT_VALUE = "AAAAAAAAAA";
     private static final String UPDATED_VALUE = "BBBBBBBBBB";
 
-    @Autowired
-    private KeyRepository keyRepository;
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
     @Autowired
-    private KeyService keyService;
+    private KeyRepository keyRepository;
 
     @Autowired
     private KeySearchRepository keySearchRepository;
@@ -73,7 +72,7 @@ public class KeyResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        KeyResource keyResource = new KeyResource(keyService);
+        KeyResource keyResource = new KeyResource(keyRepository, keySearchRepository);
         this.restKeyMockMvc = MockMvcBuilders.standaloneSetup(keyResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -88,8 +87,9 @@ public class KeyResourceIntTest {
      */
     public static Key createEntity(EntityManager em) {
         Key key = new Key()
-            .key(DEFAULT_KEY)
-            .value(DEFAULT_VALUE);
+            .name(DEFAULT_NAME)
+            .value(DEFAULT_VALUE)
+            .description(DEFAULT_DESCRIPTION);
         return key;
     }
 
@@ -114,8 +114,9 @@ public class KeyResourceIntTest {
         List<Key> keyList = keyRepository.findAll();
         assertThat(keyList).hasSize(databaseSizeBeforeCreate + 1);
         Key testKey = keyList.get(keyList.size() - 1);
-        assertThat(testKey.getKey()).isEqualTo(DEFAULT_KEY);
+        assertThat(testKey.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testKey.getValue()).isEqualTo(DEFAULT_VALUE);
+        assertThat(testKey.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
 
         // Validate the Key in Elasticsearch
         Key keyEs = keySearchRepository.findOne(testKey.getId());
@@ -143,42 +144,6 @@ public class KeyResourceIntTest {
 
     @Test
     @Transactional
-    public void checkKeyIsRequired() throws Exception {
-        int databaseSizeBeforeTest = keyRepository.findAll().size();
-        // set the field null
-        key.setKey(null);
-
-        // Create the Key, which fails.
-
-        restKeyMockMvc.perform(post("/api/keys")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(key)))
-            .andExpect(status().isBadRequest());
-
-        List<Key> keyList = keyRepository.findAll();
-        assertThat(keyList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkValueIsRequired() throws Exception {
-        int databaseSizeBeforeTest = keyRepository.findAll().size();
-        // set the field null
-        key.setValue(null);
-
-        // Create the Key, which fails.
-
-        restKeyMockMvc.perform(post("/api/keys")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(key)))
-            .andExpect(status().isBadRequest());
-
-        List<Key> keyList = keyRepository.findAll();
-        assertThat(keyList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllKeys() throws Exception {
         // Initialize the database
         keyRepository.saveAndFlush(key);
@@ -188,8 +153,9 @@ public class KeyResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(key.getId().intValue())))
-            .andExpect(jsonPath("$.[*].key").value(hasItem(DEFAULT_KEY.toString())))
-            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.toString())));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
 
     @Test
@@ -203,8 +169,9 @@ public class KeyResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(key.getId().intValue()))
-            .andExpect(jsonPath("$.key").value(DEFAULT_KEY.toString()))
-            .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.toString()));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+            .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.toString()))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
     }
 
     @Test
@@ -219,15 +186,16 @@ public class KeyResourceIntTest {
     @Transactional
     public void updateKey() throws Exception {
         // Initialize the database
-        keyService.save(key);
-
+        keyRepository.saveAndFlush(key);
+        keySearchRepository.save(key);
         int databaseSizeBeforeUpdate = keyRepository.findAll().size();
 
         // Update the key
         Key updatedKey = keyRepository.findOne(key.getId());
         updatedKey
-            .key(UPDATED_KEY)
-            .value(UPDATED_VALUE);
+            .name(UPDATED_NAME)
+            .value(UPDATED_VALUE)
+            .description(UPDATED_DESCRIPTION);
 
         restKeyMockMvc.perform(put("/api/keys")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -238,8 +206,9 @@ public class KeyResourceIntTest {
         List<Key> keyList = keyRepository.findAll();
         assertThat(keyList).hasSize(databaseSizeBeforeUpdate);
         Key testKey = keyList.get(keyList.size() - 1);
-        assertThat(testKey.getKey()).isEqualTo(UPDATED_KEY);
+        assertThat(testKey.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testKey.getValue()).isEqualTo(UPDATED_VALUE);
+        assertThat(testKey.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
 
         // Validate the Key in Elasticsearch
         Key keyEs = keySearchRepository.findOne(testKey.getId());
@@ -268,8 +237,8 @@ public class KeyResourceIntTest {
     @Transactional
     public void deleteKey() throws Exception {
         // Initialize the database
-        keyService.save(key);
-
+        keyRepository.saveAndFlush(key);
+        keySearchRepository.save(key);
         int databaseSizeBeforeDelete = keyRepository.findAll().size();
 
         // Get the key
@@ -290,15 +259,17 @@ public class KeyResourceIntTest {
     @Transactional
     public void searchKey() throws Exception {
         // Initialize the database
-        keyService.save(key);
+        keyRepository.saveAndFlush(key);
+        keySearchRepository.save(key);
 
         // Search the key
         restKeyMockMvc.perform(get("/api/_search/keys?query=id:" + key.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(key.getId().intValue())))
-            .andExpect(jsonPath("$.[*].key").value(hasItem(DEFAULT_KEY.toString())))
-            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.toString())));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
 
     @Test

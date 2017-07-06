@@ -8,6 +8,12 @@
             "otherEntityRelationshipName": "application"
         },
         {
+            "relationshipType": "one-to-many",
+            "relationshipName": "stage",
+            "otherEntityName": "stage",
+            "otherEntityRelationshipName": "application"
+        },
+        {
             "relationshipType": "many-to-one",
             "relationshipName": "organisation",
             "otherEntityName": "organisation",

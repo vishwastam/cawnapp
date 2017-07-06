@@ -39,12 +39,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = CawnappApp.class)
 public class KeyResourceIntTest {
 
-    private static final String DEFAULT_ORGANISATION = "AAAAAAAAAA";
-    private static final String UPDATED_ORGANISATION = "BBBBBBBBBB";
-
-    private static final String DEFAULT_APP = "AAAAAAAAAA";
-    private static final String UPDATED_APP = "BBBBBBBBBB";
-
     private static final String DEFAULT_KEY = "AAAAAAAAAA";
     private static final String UPDATED_KEY = "BBBBBBBBBB";
 
@@ -94,8 +88,6 @@ public class KeyResourceIntTest {
      */
     public static Key createEntity(EntityManager em) {
         Key key = new Key()
-            .organisation(DEFAULT_ORGANISATION)
-            .app(DEFAULT_APP)
             .key(DEFAULT_KEY)
             .value(DEFAULT_VALUE);
         return key;
@@ -122,8 +114,6 @@ public class KeyResourceIntTest {
         List<Key> keyList = keyRepository.findAll();
         assertThat(keyList).hasSize(databaseSizeBeforeCreate + 1);
         Key testKey = keyList.get(keyList.size() - 1);
-        assertThat(testKey.getOrganisation()).isEqualTo(DEFAULT_ORGANISATION);
-        assertThat(testKey.getApp()).isEqualTo(DEFAULT_APP);
         assertThat(testKey.getKey()).isEqualTo(DEFAULT_KEY);
         assertThat(testKey.getValue()).isEqualTo(DEFAULT_VALUE);
 
@@ -149,42 +139,6 @@ public class KeyResourceIntTest {
         // Validate the Alice in the database
         List<Key> keyList = keyRepository.findAll();
         assertThat(keyList).hasSize(databaseSizeBeforeCreate);
-    }
-
-    @Test
-    @Transactional
-    public void checkOrganisationIsRequired() throws Exception {
-        int databaseSizeBeforeTest = keyRepository.findAll().size();
-        // set the field null
-        key.setOrganisation(null);
-
-        // Create the Key, which fails.
-
-        restKeyMockMvc.perform(post("/api/keys")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(key)))
-            .andExpect(status().isBadRequest());
-
-        List<Key> keyList = keyRepository.findAll();
-        assertThat(keyList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkAppIsRequired() throws Exception {
-        int databaseSizeBeforeTest = keyRepository.findAll().size();
-        // set the field null
-        key.setApp(null);
-
-        // Create the Key, which fails.
-
-        restKeyMockMvc.perform(post("/api/keys")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(key)))
-            .andExpect(status().isBadRequest());
-
-        List<Key> keyList = keyRepository.findAll();
-        assertThat(keyList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -234,8 +188,6 @@ public class KeyResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(key.getId().intValue())))
-            .andExpect(jsonPath("$.[*].organisation").value(hasItem(DEFAULT_ORGANISATION.toString())))
-            .andExpect(jsonPath("$.[*].app").value(hasItem(DEFAULT_APP.toString())))
             .andExpect(jsonPath("$.[*].key").value(hasItem(DEFAULT_KEY.toString())))
             .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.toString())));
     }
@@ -251,8 +203,6 @@ public class KeyResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(key.getId().intValue()))
-            .andExpect(jsonPath("$.organisation").value(DEFAULT_ORGANISATION.toString()))
-            .andExpect(jsonPath("$.app").value(DEFAULT_APP.toString()))
             .andExpect(jsonPath("$.key").value(DEFAULT_KEY.toString()))
             .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.toString()));
     }
@@ -276,8 +226,6 @@ public class KeyResourceIntTest {
         // Update the key
         Key updatedKey = keyRepository.findOne(key.getId());
         updatedKey
-            .organisation(UPDATED_ORGANISATION)
-            .app(UPDATED_APP)
             .key(UPDATED_KEY)
             .value(UPDATED_VALUE);
 
@@ -290,8 +238,6 @@ public class KeyResourceIntTest {
         List<Key> keyList = keyRepository.findAll();
         assertThat(keyList).hasSize(databaseSizeBeforeUpdate);
         Key testKey = keyList.get(keyList.size() - 1);
-        assertThat(testKey.getOrganisation()).isEqualTo(UPDATED_ORGANISATION);
-        assertThat(testKey.getApp()).isEqualTo(UPDATED_APP);
         assertThat(testKey.getKey()).isEqualTo(UPDATED_KEY);
         assertThat(testKey.getValue()).isEqualTo(UPDATED_VALUE);
 
@@ -351,8 +297,6 @@ public class KeyResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(key.getId().intValue())))
-            .andExpect(jsonPath("$.[*].organisation").value(hasItem(DEFAULT_ORGANISATION.toString())))
-            .andExpect(jsonPath("$.[*].app").value(hasItem(DEFAULT_APP.toString())))
             .andExpect(jsonPath("$.[*].key").value(hasItem(DEFAULT_KEY.toString())))
             .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.toString())));
     }

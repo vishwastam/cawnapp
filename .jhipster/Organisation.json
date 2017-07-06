@@ -1,0 +1,27 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "application",
+            "otherEntityName": "application",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "organisation"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "subscriptiontype",
+            "fieldType": "Subs_Type",
+            "fieldValues": "FREE,POC,PREMIUM"
+        }
+    ],
+    "changelogDate": "20170704183314",
+    "dto": "no",
+    "service": "no",
+    "entityTableName": "organisation",
+    "pagination": "no"
+}

@@ -1,10 +1,10 @@
 <div>
     <h2>
-        <span>Keys</span>
-        <button class="btn btn-primary float-right create-key" [routerLink]="['/', { outlets: { popup: ['key-new'] } }]">
+        <span>Applications</span>
+        <button class="btn btn-primary float-right create-application" [routerLink]="['/', { outlets: { popup: ['application-new'] } }]">
             <span class="fa fa-plus"></span>
             <span class="hidden-sm-down" >
-            Create new Key
+            Create new Application
             </span>
         </button>
     </h2>
@@ -25,38 +25,44 @@
         </div>
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="keys">
+    <div class="table-responsive" *ngIf="applications">
         <table class="table table-striped">
             <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span>ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="key"><span>Key</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="value"><span>Value</span> <span class="fa fa-sort"></span></th>
+            <tr>
+            <th><span>ID</span></th>
+            <th><span>Name</span></th>
+            <th><span>Description</span></th>
+            <th><span>Organisation</span></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let key of keys ;trackBy: trackId">
-                <td><a [routerLink]="['../key', key.id ]">{{key.id}}</a></td>
-                <td>{{key.key}}</td>
-                <td>{{key.value}}</td>
+            <tr *ngFor="let application of applications ;trackBy: trackId">
+                <td><a [routerLink]="['../application', application.id ]">{{application.id}}</a></td>
+                <td>{{application.name}}</td>
+                <td>{{application.description}}</td>
+                <td>
+                    <div *ngIf="application.organisation">
+                        <a [routerLink]="['../organisation', application.organisation?.id ]" >{{application.organisation?.name}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]="['../key', key.id ]"
+                                [routerLink]="['../application', application.id ]"
                                 class="btn btn-info btn-sm">
                             <span class="fa fa-eye"></span>
                             <span class="hidden-md-down">View</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'key/'+ key.id + '/edit'} }]"
+                                [routerLink]="['/', { outlets: { popup: 'application/'+ application.id + '/edit'} }]"
                                 replaceUrl="true"
                                 class="btn btn-primary btn-sm">
                             <span class="fa fa-pencil"></span>
                             <span class="hidden-md-down">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'key/'+ key.id + '/delete'} }]"
+                                [routerLink]="['/', { outlets: { popup: 'application/'+ application.id + '/delete'} }]"
                                 replaceUrl="true"
                                 class="btn btn-danger btn-sm">
                             <span class="fa fa-remove"></span>
@@ -68,12 +74,4 @@
             </tbody>
         </table>
     </div>
-        <div *ngIf="keys && keys.length">
-            <div class="row justify-content-center">
-                <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
-            </div>
-            <div class="row justify-content-center">
-                <ngb-pagination [collectionSize]="totalItems" [(page)]="page" (pageChange)="loadPage(page)"></ngb-pagination>
-            </div>
-        </div>
 </div>

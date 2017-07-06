@@ -3,20 +3,6 @@
     "relationships": [],
     "fields": [
         {
-            "fieldName": "organisation",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "app",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
             "fieldName": "key",
             "fieldType": "String",
             "fieldValidateRules": [

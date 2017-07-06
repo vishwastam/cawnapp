@@ -26,14 +26,6 @@ public class Key implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "organisation", nullable = false)
-    private String organisation;
-
-    @NotNull
-    @Column(name = "app", nullable = false)
-    private String app;
-
-    @NotNull
     @Column(name = "jhi_key", nullable = false)
     private String key;
 
@@ -47,32 +39,6 @@ public class Key implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getOrganisation() {
-        return organisation;
-    }
-
-    public Key organisation(String organisation) {
-        this.organisation = organisation;
-        return this;
-    }
-
-    public void setOrganisation(String organisation) {
-        this.organisation = organisation;
-    }
-
-    public String getApp() {
-        return app;
-    }
-
-    public Key app(String app) {
-        this.app = app;
-        return this;
-    }
-
-    public void setApp(String app) {
-        this.app = app;
     }
 
     public String getKey() {
@@ -125,8 +91,6 @@ public class Key implements Serializable {
     public String toString() {
         return "Key{" +
             "id=" + getId() +
-            ", organisation='" + getOrganisation() + "'" +
-            ", app='" + getApp() + "'" +
             ", key='" + getKey() + "'" +
             ", value='" + getValue() + "'" +
             "}";

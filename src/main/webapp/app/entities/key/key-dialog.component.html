@@ -13,30 +13,6 @@
                    [(ngModel)]="key.id" readonly />
         </div>
         <div class="form-group">
-            <label class="form-control-label" for="field_organisation">Organisation</label>
-            <input type="text" class="form-control" name="organisation" id="field_organisation"
-                [(ngModel)]="key.organisation"
-            required />
-            <div [hidden]="!(editForm.controls.organisation?.dirty && editForm.controls.organisation?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.organisation?.errors?.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" for="field_app">App</label>
-            <input type="text" class="form-control" name="app" id="field_app"
-                [(ngModel)]="key.app"
-            required />
-            <div [hidden]="!(editForm.controls.app?.dirty && editForm.controls.app?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.app?.errors?.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
             <label class="form-control-label" for="field_key">Key</label>
             <input type="text" class="form-control" name="key" id="field_key"
                 [(ngModel)]="key.key"

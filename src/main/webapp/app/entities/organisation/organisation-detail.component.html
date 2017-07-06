@@ -1,16 +1,16 @@
 
-<div *ngIf="key">
-    <h2><span>Key</span> {{key.id}}</h2>
+<div *ngIf="organisation">
+    <h2><span>Organisation</span> {{organisation.id}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span>Key</span></dt>
+        <dt><span>Name</span></dt>
         <dd>
-            <span>{{key.key}}</span>
+            <span>{{organisation.name}}</span>
         </dd>
-        <dt><span>Value</span></dt>
+        <dt><span>Subscriptiontype</span></dt>
         <dd>
-            <span>{{key.value}}</span>
+            <span>{{organisation.subscriptiontype}}</span>
         </dd>
     </dl>
 
@@ -21,7 +21,7 @@
     </button>
 
     <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'key/'+ key.id + '/edit'} }]"
+            [routerLink]="['/', { outlets: { popup: 'organisation/'+ organisation.id + '/edit'} }]"
             replaceUrl="true"
             class="btn btn-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>

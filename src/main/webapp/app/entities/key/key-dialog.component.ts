@@ -9,7 +9,7 @@ import { EventManager, AlertService } from 'ng-jhipster';
 import { Key } from './key.model';
 import { KeyPopupService } from './key-popup.service';
 import { KeyService } from './key.service';
-import { Application, ApplicationService } from '../application';
+import { Stage, StageService } from '../stage';
 import { ResponseWrapper } from '../../shared';
 
 @Component({
@@ -22,13 +22,13 @@ export class KeyDialogComponent implements OnInit {
     authorities: any[];
     isSaving: boolean;
 
-    applications: Application[];
+    stages: Stage[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private alertService: AlertService,
         private keyService: KeyService,
-        private applicationService: ApplicationService,
+        private stageService: StageService,
         private eventManager: EventManager
     ) {
     }
@@ -36,8 +36,8 @@ export class KeyDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
-        this.applicationService.query()
-            .subscribe((res: ResponseWrapper) => { this.applications = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+        this.stageService.query()
+            .subscribe((res: ResponseWrapper) => { this.stages = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }
     clear() {
         this.activeModal.dismiss('cancel');
@@ -84,7 +84,7 @@ export class KeyDialogComponent implements OnInit {
         this.alertService.error(error.message, null, null);
     }
 
-    trackApplicationById(index: number, item: Application) {
+    trackStageById(index: number, item: Stage) {
         return item.id;
     }
 }

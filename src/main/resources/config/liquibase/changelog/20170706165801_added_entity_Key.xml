@@ -33,7 +33,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="application_id" type="bigint">
+            <column name="stage_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

@@ -16,10 +16,10 @@
         <dd>
             <span>{{key.description}}</span>
         </dd>
-        <dt><span>Application</span></dt>
+        <dt><span>Stage</span></dt>
         <dd>
-            <div *ngIf="key.application">
-                <a [routerLink]="['/application', key.application?.id]">{{key.application?.name}}</a>
+            <div *ngIf="key.stage">
+                <a [routerLink]="['/stage', key.stage?.id]">{{key.stage?.name}}</a>
             </div>
         </dd>
     </dl>

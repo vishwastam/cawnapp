@@ -3,12 +3,6 @@
     "relationships": [
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "key",
-            "otherEntityName": "key",
-            "otherEntityRelationshipName": "application"
-        },
-        {
-            "relationshipType": "one-to-many",
             "relationshipName": "stage",
             "otherEntityName": "stage",
             "otherEntityRelationshipName": "application"

@@ -1,3 +1,4 @@
+import { Key } from '../key';
 import { Application } from '../application';
 export class Stage {
     constructor(

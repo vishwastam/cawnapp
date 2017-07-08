@@ -3,8 +3,8 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
-            "relationshipName": "application",
-            "otherEntityName": "application",
+            "relationshipName": "stage",
+            "otherEntityName": "stage",
             "otherEntityField": "name"
         }
     ],

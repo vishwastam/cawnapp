@@ -34,7 +34,7 @@ public class Key implements Serializable {
     private String description;
 
     @ManyToOne
-    private Application application;
+    private Stage stage;
 
     public Long getId() {
         return id;
@@ -83,17 +83,17 @@ public class Key implements Serializable {
         this.description = description;
     }
 
-    public Application getApplication() {
-        return application;
+    public Stage getStage() {
+        return stage;
     }
 
-    public Key application(Application application) {
-        this.application = application;
+    public Key stage(Stage stage) {
+        this.stage = stage;
         return this;
     }
 
-    public void setApplication(Application application) {
-        this.application = application;
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     @Override

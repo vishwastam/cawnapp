@@ -36,11 +36,6 @@ public class Application implements Serializable {
     @OneToMany(mappedBy = "application")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Key> keys = new HashSet<>();
-
-    @OneToMany(mappedBy = "application")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Stage> stages = new HashSet<>();
 
     @ManyToOne
@@ -78,31 +73,6 @@ public class Application implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Set<Key> getKeys() {
-        return keys;
-    }
-
-    public Application keys(Set<Key> keys) {
-        this.keys = keys;
-        return this;
-    }
-
-    public Application addKey(Key key) {
-        this.keys.add(key);
-        key.setApplication(this);
-        return this;
-    }
-
-    public Application removeKey(Key key) {
-        this.keys.remove(key);
-        key.setApplication(null);
-        return this;
-    }
-
-    public void setKeys(Set<Key> keys) {
-        this.keys = keys;
     }
 
     public Set<Stage> getStages() {

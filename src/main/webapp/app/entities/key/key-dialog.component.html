@@ -32,10 +32,10 @@
         </div>
 
         <div class="form-group">
-            <label for="field_application">Application</label>
-            <select class="form-control" id="field_application" name="application" [(ngModel)]="key.application" >
+            <label for="field_stage">Stage</label>
+            <select class="form-control" id="field_stage" name="stage" [(ngModel)]="key.stage" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="applicationOption.id === key.application?.id ? key.application : applicationOption" *ngFor="let applicationOption of applications; trackBy: trackApplicationById">{{applicationOption.name}}</option>
+                <option [ngValue]="stageOption.id === key.stage?.id ? key.stage : stageOption" *ngFor="let stageOption of stages; trackBy: trackStageById">{{stageOption.name}}</option>
             </select>
         </div>
     </div>

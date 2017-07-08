@@ -1,11 +1,14 @@
 package com.cawnfig.cawnapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -29,6 +32,11 @@ public class Stage implements Serializable {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "stage")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Key> applications = new HashSet<>();
 
     @ManyToOne
     private Application application;
@@ -65,6 +73,31 @@ public class Stage implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<Key> getApplications() {
+        return applications;
+    }
+
+    public Stage applications(Set<Key> keys) {
+        this.applications = keys;
+        return this;
+    }
+
+    public Stage addApplication(Key key) {
+        this.applications.add(key);
+        key.setStage(this);
+        return this;
+    }
+
+    public Stage removeApplication(Key key) {
+        this.applications.remove(key);
+        key.setStage(null);
+        return this;
+    }
+
+    public void setApplications(Set<Key> keys) {
+        this.applications = keys;
     }
 
     public Application getApplication() {

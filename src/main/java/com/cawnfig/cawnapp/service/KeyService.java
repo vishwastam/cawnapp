@@ -1,6 +1,7 @@
 package com.cawnfig.cawnapp.service;
 
 import com.cawnfig.cawnapp.domain.Key;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,8 +15,9 @@ public interface KeyService {
      *
      * @param key the entity to save
      * @return the persisted entity
+     * @throws Exception 
      */
-    Key save(Key key);
+    Key save(Key key) throws Exception;
 
     /**
      *  Get all the keys.

@@ -4,13 +4,13 @@ import com.cawnfig.cawnapp.service.KeyService;
 import com.cawnfig.cawnapp.domain.Key;
 import com.cawnfig.cawnapp.repository.KeyRepository;
 import com.cawnfig.cawnapp.repository.search.KeySearchRepository;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -37,9 +37,10 @@ public class KeyServiceImpl implements KeyService{
      *
      * @param key the entity to save
      * @return the persisted entity
+     * @throws Exception 
      */
     @Override
-    public Key save(Key key) {
+    public Key save(Key key) throws Exception {
         log.debug("Request to save Key : {}", key);
         Key result = keyRepository.save(key);
         keySearchRepository.save(result);

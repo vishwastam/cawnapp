@@ -1,6 +1,6 @@
 # cawnapp
 ## Overview
-Cawnfig is an application configuration management platform over cloud.  It provides developers with a UI editor to securely create, update and manage configuration key value pairs. Developers also get the option to bulk import all their configuration directly onto Cawnfig. It allows your applications to reconfigure themselves with hot/runtime updates to any configuration change. Cawnfig is backed by a distributed and highly available key value storage which is designed to deliver high throughput. Your applications can access their respective, stage-specific configurations with a simple web service interface, Cawnfig API. 
+Cawnapp is the fronting web application cum gateway for Cawnfig which is an application configuration management platform over cloud.  It provides developers with a UI editor to securely create, update and manage configuration key value pairs. Developers also get the option to bulk import all their configuration directly onto Cawnfig. It allows your applications to reconfigure themselves with hot/runtime updates to any configuration change. Cawnfig is backed by a distributed and highly available key value storage which is designed to deliver high throughput. Your applications can access their respective, stage-specific configurations with a simple web service interface, Cawnfig API. 
 
 ## Development
 
@@ -128,14 +128,6 @@ For more information refer to [Using Docker and Docker-Compose][], this page als
 
 To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
 
-[JHipster Homepage and latest documentation]: https://jhipster.github.io
-[JHipster 4.5.2 archive]: https://jhipster.github.io/documentation-archive/v4.5.2
-
-[Using JHipster in development]: https://jhipster.github.io/documentation-archive/v4.5.2/development/
-[Using Docker and Docker-Compose]: https://jhipster.github.io/documentation-archive/v4.5.2/docker-compose
-[Using JHipster in production]: https://jhipster.github.io/documentation-archive/v4.5.2/production/
-[Running tests page]: https://jhipster.github.io/documentation-archive/v4.5.2/running-tests/
-[Setting up Continuous Integration]: https://jhipster.github.io/documentation-archive/v4.5.2/setting-up-ci/
 
 
 [Node.js]: https://nodejs.org/

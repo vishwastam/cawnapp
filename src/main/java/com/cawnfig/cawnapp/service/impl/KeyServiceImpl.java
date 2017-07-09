@@ -1,16 +1,17 @@
 package com.cawnfig.cawnapp.service.impl;
 
 import com.cawnfig.cawnapp.service.KeyService;
+import com.cawnfig.cawnapp.service.util.CryptoHelper;
 import com.cawnfig.cawnapp.domain.Key;
 import com.cawnfig.cawnapp.repository.KeyRepository;
 import com.cawnfig.cawnapp.repository.search.KeySearchRepository;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -45,6 +46,30 @@ public class KeyServiceImpl implements KeyService{
         keySearchRepository.save(result);
         return result;
     }
+
+    /**
+     * Encrypt the value contained in key and Save key.
+     *
+     * @param key the entity to save
+     * @return the persisted entity
+     * @throws Exception 
+     */
+	@Override
+	public Key encryptAndsave(Key key) throws Exception {
+		encrypt(key);
+		return save(key);
+	}
+
+	/**
+	 * Encrypt the key
+	 * 
+	 * @param key
+	 * @throws Exception
+	 */
+	private void encrypt(Key key) throws Exception{
+		CryptoHelper cryptoHelper = new CryptoHelper();
+		cryptoHelper.encrypt(key.getValue());
+	}
 
     /**
      *  Get all the keys.
@@ -98,4 +123,5 @@ public class KeyServiceImpl implements KeyService{
         Page<Key> result = keySearchRepository.search(queryStringQuery(query), pageable);
         return result;
     }
+
 }

@@ -1,5 +1,6 @@
 # cawnapp
-This application was generated using JHipster 4.5.2, you can find documentation and help at [https://jhipster.github.io/documentation-archive/v4.5.2](https://jhipster.github.io/documentation-archive/v4.5.2).
+## Overview
+Cawnfig is an application configuration management platform over cloud.  It provides developers with a UI editor to securely create, update and manage configuration key value pairs. Developers also get the option to bulk import all their configuration directly onto Cawnfig. It allows your applications to reconfigure themselves with hot/runtime updates to any configuration change. Cawnfig is backed by a distributed and highly available key value storage which is designed to deliver high throughput. Your applications can access their respective, stage-specific configurations with a simple web service interface, Cawnfig API. 
 
 ## Development
 

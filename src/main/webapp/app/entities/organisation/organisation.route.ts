@@ -16,7 +16,7 @@ export const organisationRoute: Routes = [
         path: 'organisation',
         component: OrganisationComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ORG_ADMIN', 'ROLE_ADMIN'],
             pageTitle: 'Organisations'
         },
         canActivate: [UserRouteAccessService]
@@ -24,7 +24,7 @@ export const organisationRoute: Routes = [
         path: 'organisation/:id',
         component: OrganisationDetailComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ORG_ADMIN', 'ROLE_ADMIN'],
             pageTitle: 'Organisations'
         },
         canActivate: [UserRouteAccessService]
@@ -36,7 +36,7 @@ export const organisationPopupRoute: Routes = [
         path: 'organisation-new',
         component: OrganisationPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'Organisations'
         },
         canActivate: [UserRouteAccessService],
@@ -46,7 +46,7 @@ export const organisationPopupRoute: Routes = [
         path: 'organisation/:id/edit',
         component: OrganisationPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'Organisations'
         },
         canActivate: [UserRouteAccessService],
@@ -56,7 +56,7 @@ export const organisationPopupRoute: Routes = [
         path: 'organisation/:id/delete',
         component: OrganisationDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'Organisations'
         },
         canActivate: [UserRouteAccessService],

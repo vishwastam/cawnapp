@@ -35,7 +35,7 @@ export class StageDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
+        this.authorities = ['ROLE_USER', 'ROLE_ORG_ADMIN', 'ROLE_ADMIN'];
         this.applicationService.query()
             .subscribe((res: ResponseWrapper) => { this.applications = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
     }

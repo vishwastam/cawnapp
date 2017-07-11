@@ -36,7 +36,7 @@ export const applicationPopupRoute: Routes = [
         path: 'application-new',
         component: ApplicationPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ORG_ADMIN', 'ROLE_ADMIN'],
             pageTitle: 'Applications'
         },
         canActivate: [UserRouteAccessService],
@@ -46,7 +46,7 @@ export const applicationPopupRoute: Routes = [
         path: 'application/:id/edit',
         component: ApplicationPopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ORG_ADMIN', 'ROLE_ADMIN'],
             pageTitle: 'Applications'
         },
         canActivate: [UserRouteAccessService],
@@ -56,7 +56,7 @@ export const applicationPopupRoute: Routes = [
         path: 'application/:id/delete',
         component: ApplicationDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ORG_ADMIN', 'ROLE_ADMIN'],
             pageTitle: 'Applications'
         },
         canActivate: [UserRouteAccessService],

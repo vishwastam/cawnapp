@@ -36,7 +36,7 @@ export const stagePopupRoute: Routes = [
         path: 'stage-new',
         component: StagePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ORG_ADMIN', 'ROLE_ADMIN'],
             pageTitle: 'Stages'
         },
         canActivate: [UserRouteAccessService],
@@ -46,7 +46,7 @@ export const stagePopupRoute: Routes = [
         path: 'stage/:id/edit',
         component: StagePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ORG_ADMIN', 'ROLE_ADMIN'],
             pageTitle: 'Stages'
         },
         canActivate: [UserRouteAccessService],
@@ -56,7 +56,7 @@ export const stagePopupRoute: Routes = [
         path: 'stage/:id/delete',
         component: StageDeletePopupComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ORG_ADMIN', 'ROLE_ADMIN'],
             pageTitle: 'Stages'
         },
         canActivate: [UserRouteAccessService],

@@ -17,7 +17,7 @@ public class KeyGenHelper {
 
 	private final static Logger log = LoggerFactory.getLogger(KeyGenHelper.class);
 
-    private static final String keyDir  = System.getProperty("java.io.tmpdir");;
+    private static final String keyDir  = "/Users/vishwastamshukla/Documents/workspace";
     private static final String keyName = "secret.key";
 	private final static String ALGO = "AES";
 
@@ -37,9 +37,9 @@ public class KeyGenHelper {
         //Generate secret key.
         return new SecretKeySpec(encodedPrivateKey, "AES");	}
 
-	public static void main(String args[]) throws Exception{
-		generateAndSaveKey();
-	}
+//	public static void main(String args[]) throws Exception{
+//		generateAndSaveKey();
+//	}
 
 	public static void generateAndSaveKey() throws Exception{
 		Key key = generateSymmetricKey();

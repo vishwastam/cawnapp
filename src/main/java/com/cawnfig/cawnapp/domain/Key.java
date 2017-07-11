@@ -33,6 +33,9 @@ public class Key implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "is_secure")
+    private Boolean is_secure;
+
     @ManyToOne
     private Stage stage;
 
@@ -83,6 +86,19 @@ public class Key implements Serializable {
         this.description = description;
     }
 
+    public Boolean isIs_secure() {
+        return is_secure;
+    }
+
+    public Key is_secure(Boolean is_secure) {
+        this.is_secure = is_secure;
+        return this;
+    }
+
+    public void setIs_secure(Boolean is_secure) {
+        this.is_secure = is_secure;
+    }
+
     public Stage getStage() {
         return stage;
     }
@@ -123,6 +139,7 @@ public class Key implements Serializable {
             ", name='" + getName() + "'" +
             ", value='" + getValue() + "'" +
             ", description='" + getDescription() + "'" +
+            ", is_secure='" + isIs_secure() + "'" +
             "}";
     }
 }

@@ -42,6 +42,10 @@ public class KeyServiceImpl implements KeyService{
     @Override
     public Key save(Key key) {
         log.debug("Request to save Key : {}", key);
+        log.debug("Checking the is_secure flag. It is set to : {}", key.isIs_secure());
+        if(key.isIs_secure()) {
+        	encrypt(key);
+        }
         Key result = keyRepository.save(key);
         keySearchRepository.save(result);
         return result;
@@ -66,9 +70,14 @@ public class KeyServiceImpl implements KeyService{
 	 * @param key
 	 * @throws Exception
 	 */
-	private void encrypt(Key key) throws Exception{
+	private void encrypt(Key key) {
+		log.debug("Encrypting Key : {}", key);
 		CryptoHelper cryptoHelper = new CryptoHelper();
-		cryptoHelper.encrypt(key.getValue());
+		try {
+			key.setValue(cryptoHelper.encrypt(key.getValue()));
+		} catch (Exception e) {
+			log.error("Failed to encrypt Key : {}", key);
+		}
 	}
 
     /**

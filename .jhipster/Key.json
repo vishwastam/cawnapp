@@ -20,11 +20,15 @@
         {
             "fieldName": "description",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "is_secure",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20170706165801",
-    "entityTableName": "key",
     "dto": "no",
-    "pagination": "no",
-    "service": "no"
+    "service": "no",
+    "entityTableName": "key",
+    "pagination": "no"
 }

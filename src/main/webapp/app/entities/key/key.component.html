@@ -33,6 +33,7 @@
             <th><span>Name</span></th>
             <th><span>Value</span></th>
             <th><span>Description</span></th>
+            <th><span>Is Secure</span></th>
             <th><span>Stage</span></th>
             <th></th>
             </tr>
@@ -43,6 +44,7 @@
                 <td>{{key.name}}</td>
                 <td>{{key.value}}</td>
                 <td>{{key.description}}</td>
+                <td>{{key.is_secure}}</td>
                 <td>
                     <div *ngIf="key.stage">
                         <a [routerLink]="['../stage', key.stage?.id ]" >{{key.stage?.name}}</a>

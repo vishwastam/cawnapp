@@ -47,6 +47,9 @@ public class KeyResourceIntTest {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_IS_SECURE = false;
+    private static final Boolean UPDATED_IS_SECURE = true;
+
     @Autowired
     private KeyRepository keyRepository;
 
@@ -89,7 +92,8 @@ public class KeyResourceIntTest {
         Key key = new Key()
             .name(DEFAULT_NAME)
             .value(DEFAULT_VALUE)
-            .description(DEFAULT_DESCRIPTION);
+            .description(DEFAULT_DESCRIPTION)
+            .is_secure(DEFAULT_IS_SECURE);
         return key;
     }
 
@@ -117,6 +121,7 @@ public class KeyResourceIntTest {
         assertThat(testKey.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testKey.getValue()).isEqualTo(DEFAULT_VALUE);
         assertThat(testKey.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testKey.isIs_secure()).isEqualTo(DEFAULT_IS_SECURE);
 
         // Validate the Key in Elasticsearch
         Key keyEs = keySearchRepository.findOne(testKey.getId());
@@ -155,7 +160,8 @@ public class KeyResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(key.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].is_secure").value(hasItem(DEFAULT_IS_SECURE.booleanValue())));
     }
 
     @Test
@@ -171,7 +177,8 @@ public class KeyResourceIntTest {
             .andExpect(jsonPath("$.id").value(key.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.toString()))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.is_secure").value(DEFAULT_IS_SECURE.booleanValue()));
     }
 
     @Test
@@ -195,7 +202,8 @@ public class KeyResourceIntTest {
         updatedKey
             .name(UPDATED_NAME)
             .value(UPDATED_VALUE)
-            .description(UPDATED_DESCRIPTION);
+            .description(UPDATED_DESCRIPTION)
+            .is_secure(UPDATED_IS_SECURE);
 
         restKeyMockMvc.perform(put("/api/keys")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -209,6 +217,7 @@ public class KeyResourceIntTest {
         assertThat(testKey.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testKey.getValue()).isEqualTo(UPDATED_VALUE);
         assertThat(testKey.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testKey.isIs_secure()).isEqualTo(UPDATED_IS_SECURE);
 
         // Validate the Key in Elasticsearch
         Key keyEs = keySearchRepository.findOne(testKey.getId());
@@ -269,7 +278,8 @@ public class KeyResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(key.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].is_secure").value(hasItem(DEFAULT_IS_SECURE.booleanValue())));
     }
 
     @Test

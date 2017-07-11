@@ -5,7 +5,9 @@ export class Key {
         public name?: string,
         public value?: string,
         public description?: string,
+        public is_secure?: boolean,
         public stage?: Stage,
     ) {
+        this.is_secure = false;
     }
 }

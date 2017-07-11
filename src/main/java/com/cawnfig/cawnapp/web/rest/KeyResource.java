@@ -5,6 +5,7 @@ import com.cawnfig.cawnapp.domain.Key;
 
 import com.cawnfig.cawnapp.repository.KeyRepository;
 import com.cawnfig.cawnapp.repository.search.KeySearchRepository;
+import com.cawnfig.cawnapp.service.util.CryptoHelper;
 import com.cawnfig.cawnapp.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -56,6 +57,9 @@ public class KeyResource {
         if (key.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new key cannot already have an ID")).body(null);
         }
+        if (key.isIs_secure()) {
+        	encrypt(key);
+        }
         Key result = keyRepository.save(key);
         keySearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/keys/" + result.getId()))
@@ -79,12 +83,25 @@ public class KeyResource {
         if (key.getId() == null) {
             return createKey(key);
         }
+        if (key.isIs_secure()) {
+        	encrypt(key);
+        }
         Key result = keyRepository.save(key);
         keySearchRepository.save(result);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, key.getId().toString()))
             .body(result);
     }
+    
+    private void encrypt(Key key) {
+		log.debug("Encrypting Key : {}", key);
+		CryptoHelper cryptoHelper = new CryptoHelper();
+		try {
+			key.setValue(cryptoHelper.encrypt(key.getValue()));
+		} catch (Exception e) {
+			log.error("Failed to encrypt Key : {}", key);
+		}
+	}
 
     /**
      * GET  /keys : get all the keys.
@@ -109,8 +126,21 @@ public class KeyResource {
     public ResponseEntity<Key> getKey(@PathVariable Long id) {
         log.debug("REST request to get Key : {}", id);
         Key key = keyRepository.findOne(id);
+        if(key.isIs_secure()) {
+        	decrypt(key);
+        }
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(key));
     }
+    
+    private void decrypt(Key key) {
+		log.debug("Decrypting Key : {}", key);
+		CryptoHelper cryptoHelper = new CryptoHelper();
+		try {
+			key.setValue(cryptoHelper.decrypt(key.getValue()));
+		} catch (Exception e) {
+			log.error("Failed to decrypt Key : {}", key);
+		}
+	}
 
     /**
      * DELETE  /keys/:id : delete the "id" key.

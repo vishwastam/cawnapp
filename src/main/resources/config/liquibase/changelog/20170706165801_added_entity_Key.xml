@@ -33,6 +33,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="is_secure" type="boolean">
+                <constraints nullable="true" />
+            </column>
+
             <column name="stage_id" type="bigint">
                 <constraints nullable="true" />
             </column>

@@ -1,6 +1,8 @@
 package com.cawnfig.cawnapp.security;
 
+import com.cawnfig.cawnapp.domain.C_user;
 import com.cawnfig.cawnapp.domain.User;
+import com.cawnfig.cawnapp.repository.C_userRepository;
 import com.cawnfig.cawnapp.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +26,11 @@ public class DomainUserDetailsService implements UserDetailsService {
     private final Logger log = LoggerFactory.getLogger(DomainUserDetailsService.class);
 
     private final UserRepository userRepository;
+    private final C_userRepository cUserRepository;
 
-    public DomainUserDetailsService(UserRepository userRepository) {
+    public DomainUserDetailsService(UserRepository userRepository,C_userRepository cUserRepository) {
         this.userRepository = userRepository;
+        this.cUserRepository = cUserRepository;
     }
 
     @Override
@@ -39,6 +43,12 @@ public class DomainUserDetailsService implements UserDetailsService {
             if (!user.getActivated()) {
                 throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");
             }
+            
+            //TODO Remove the cUserRepository code below after registration flow is updated.
+            C_user cUser = cUserRepository.findOneByUser(user);
+            log.debug("Found c_user with organisation {}", cUser.getOrganisation().getName());
+            
+            
             List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
                     .map(authority -> new SimpleGrantedAuthority(authority.getName()))
                 .collect(Collectors.toList());

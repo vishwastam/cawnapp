@@ -1,0 +1,31 @@
+
+<div *ngIf="c_user">
+    <h2><span>C User</span> {{c_user.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>User</span></dt>
+        <dd>
+            {{c_user.user?.login}}
+        </dd>
+        <dt><span>Organisation</span></dt>
+        <dd>
+            <div *ngIf="c_user.organisation">
+                <a [routerLink]="['/organisation', c_user.organisation?.id]">{{c_user.organisation?.name}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'c-user/'+ c_user.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>

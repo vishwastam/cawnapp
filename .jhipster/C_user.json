@@ -1,0 +1,25 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "relationshipType": "one-to-one",
+            "otherEntityField": "login",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "c_user"
+        },
+        {
+            "relationshipName": "organisation",
+            "otherEntityName": "organisation",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "name"
+        }
+    ],
+    "fields": [],
+    "changelogDate": "20170712150636",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "c_user",
+    "pagination": "pagination"
+}

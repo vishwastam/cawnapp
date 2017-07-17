@@ -53,6 +53,7 @@ public class CacheConfiguration {
             cm.createCache(com.cawnfig.cawnapp.domain.Stage.class.getName(), jcacheConfiguration);
             cm.createCache(com.cawnfig.cawnapp.domain.Stage.class.getName() + ".keys", jcacheConfiguration);
             cm.createCache(com.cawnfig.cawnapp.domain.Stage.class.getName() + ".applications", jcacheConfiguration);
+            cm.createCache(com.cawnfig.cawnapp.domain.C_user.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }

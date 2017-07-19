@@ -1,26 +1,34 @@
 package com.cawnfig.cawnapp.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-import com.cawnfig.cawnapp.domain.Stage;
-
-import com.cawnfig.cawnapp.repository.StageRepository;
-import com.cawnfig.cawnapp.repository.search.StageSearchRepository;
-import com.cawnfig.cawnapp.web.rest.util.HeaderUtil;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import io.github.jhipster.web.util.ResponseUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.cawnfig.cawnapp.domain.Stage;
+import com.cawnfig.cawnapp.repository.StageRepository;
+import com.cawnfig.cawnapp.repository.search.StageSearchRepository;
+import com.cawnfig.cawnapp.web.rest.util.HeaderUtil;
+import com.codahale.metrics.annotation.Timed;
 
 /**
  * REST controller for managing Stage.
@@ -112,6 +120,19 @@ public class StageResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(stage));
     }
 
+    /**
+     * GET  /stages/applications/:id : get the stages by application "id".
+     *
+     * @param id the id of the stage to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the stage, or with status 404 (Not Found)
+     */
+    @GetMapping("/stages/applications/{id}")
+    @Timed
+    public Set<Stage> getStageByApplication(@PathVariable Long id) {
+        log.debug("REST request to get Stage for application: {}", id);
+        return stageRepository.findByOrg(id);
+    }
+    
     /**
      * DELETE  /stages/:id : delete the "id" stage.
      *

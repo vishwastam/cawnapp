@@ -2,12 +2,13 @@ package com.cawnfig.cawnapp.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.cawnfig.cawnapp.domain.Key;
-
 import com.cawnfig.cawnapp.repository.KeyRepository;
 import com.cawnfig.cawnapp.repository.search.KeySearchRepository;
 import com.cawnfig.cawnapp.service.util.CryptoHelper;
 import com.cawnfig.cawnapp.web.rest.util.HeaderUtil;
+
 import io.github.jhipster.web.util.ResponseUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -131,7 +132,45 @@ public class KeyResource {
         }
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(key));
     }
-    
+
+    /**
+     * GET  /keys/stages/:id : get the keys for "id".
+     *
+     * @param id id of the stage for which key to retrieve
+     * @return set of keys with status 200 (OK) and with body the key, or with status 404 (Not Found)
+     */
+    @GetMapping("/keys/stages/{id}")
+    @Timed
+    public Set<Key> getKeyByStage(@PathVariable Long id) {
+        log.debug("REST request to get Keys for stage : {}", id);
+        Set<Key> keySet = keyRepository.findByStage(id);
+        for (Key key : keySet){
+            if(key.isIs_secure()) {
+            	decrypt(key);
+            }
+        }
+        return keySet;
+    }
+
+    /**
+     * GET  /keys/applications/:id : get the keys for application "id".
+     *
+     * @param id id of the application for which key to retrieve
+     * @return set of keys with status 200 (OK) and with body the key, or with status 404 (Not Found)
+     */
+    @GetMapping("/keys/applications/{id}")
+    @Timed
+    public Set<Key> getKeyByApplication(@PathVariable Long id) {
+        log.debug("REST request to get Key for application: {}", id);
+        Set<Key> keySet = keyRepository.findByApplication(id);
+        for (Key key : keySet){
+            if(key.isIs_secure()) {
+            	decrypt(key);
+            }
+        }
+        return keySet;
+    }
+
     private void decrypt(Key key) {
 		log.debug("Decrypting Key : {}", key);
 		CryptoHelper cryptoHelper = new CryptoHelper();

@@ -1,12 +1,17 @@
 package com.cawnfig.cawnapp.repository;
 
+import com.cawnfig.cawnapp.domain.Stage;
 import com.cawnfig.cawnapp.domain.User;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.time.Instant;
 
 /**
@@ -31,5 +36,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findOneWithAuthoritiesByLogin(String login);
 
     Page<User> findAllByLoginNot(Pageable pageable, String login);
-    
+
+	@Query("from Stage s where s.application.id = ?1")
+	Set<Stage> fetchByOrg(Long applicationId);
 }
